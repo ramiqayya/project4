@@ -2,9 +2,24 @@
 
 {% block body %}
 
-<h2>Profile name: {{username.username|title}}</h2>
-<h2>Follwers: {{following}}</h2>
-<h2>Following: {{follwers}}</h2>
+<h2>Profile name: {{username|title}}</h2>
+<h2>Followers: {{following}}</h2>
+<h2>Following: {{followers}}</h2>
+{%if me != username%}
+{%if me in f_list%}
+
+<form action="" method="POST">
+    <input type="submit" value="Unfollow">
+</form>
+{%elif me not in f_list%}
+
+
+<form action="" method="POST">
+    <input type="submit" value="Follow">
+</form>
+
+{%endif%}
+{%endif%}
 
 {%for post in posts%}
 <div>

@@ -86,16 +86,26 @@ def register(request):
 def profile(request, user_id):
     following = Follow.objects.filter(followee_id=user_id)
     followers = Follow.objects.filter(follower_id=user_id)
+    print(followers)
+    followees_list = []
+    for follower in followers:
+        print(follower.followee)
+        followees_list.append(follower.followee)
     following_count = len(following)
     followers_count = len(followers)
     posts = Post.objects.filter(publisher_id=user_id).order_by("-date_time")
+    me = request.user
+    username = User.objects.get(pk=user_id)
 
     return render(request, "network/profile.html",
                   {
                       "following": following_count,
-                      "follwers": followers_count,
-                      "username": User.objects.get(pk=user_id),
-                      "posts": posts
+                      "followers": followers_count,
+                      "username": str(username.username),
+                      "posts": posts,
+                      "me": str(me),
+                      "f_list": followees_list
+
 
                   }
                   )
