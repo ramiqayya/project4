@@ -86,12 +86,15 @@ def profile(request):
     followers = Follow.objects.filter(followee=request.user)
     following_count = len(following)
     followers_count = len(followers)
+    posts = Post.objects.filter(publisher=request.user).order_by("-date_time")
 
     return render(request, "network/profile.html",
                   {
                       "following": following_count,
                       "follwers": followers_count,
-                      "username": request.user
+                      "username": request.user,
+                      "posts": posts
+
                   }
                   )
 
