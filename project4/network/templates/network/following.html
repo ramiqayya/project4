@@ -1,0 +1,17 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+
+{%for post in posts|dictsortreversed:"date_time"%}
+<div>
+    <h1>the guy: {{post.publisher}}</h1>
+    <p>tweet: {{post.tweet}}</p>
+    <h3>time: {{post.date_time}}</h3>
+    <h3>likes: {{post.likes}}</h3>
+
+</div>
+{%endfor%}
+
+
+{% endblock %}

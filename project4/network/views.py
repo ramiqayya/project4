@@ -82,8 +82,8 @@ def register(request):
 
 
 def profile(request):
-    following = Follow.objects.filter(follower=request.user)
-    followers = Follow.objects.filter(followee=request.user)
+    following = Follow.objects.filter(followee=request.user)
+    followers = Follow.objects.filter(follower=request.user)
     following_count = len(following)
     followers_count = len(followers)
     posts = Post.objects.filter(publisher=request.user).order_by("-date_time")
@@ -98,8 +98,24 @@ def profile(request):
                   }
                   )
 
-# def all_posts(request):
-#     all_posts = Post.objects.order_by("-date_time")
-#     return render(request, "network/allposts.html",
 
-#                   {"posts": all_posts})
+def following(request):
+    followings = Follow.objects.filter(follower=request.user)
+    allposts = []
+
+    for following in followings:
+        print(following.followee.id)
+        posts = Post.objects.filter(publisher=following.followee)
+        for post in posts:
+            print(post)
+            allposts.append(post)
+
+    return render(request, "network/following.html", {
+        "posts": allposts
+    })
+
+    # def all_posts(request):
+    #     all_posts = Post.objects.order_by("-date_time")
+    #     return render(request, "network/allposts.html",
+
+    #                   {"posts": all_posts})
