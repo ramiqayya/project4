@@ -10,6 +10,8 @@ class Post(models.Model):
     publisher = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="posted_by")
     tweet = models.CharField(max_length=280)
+    date_time = models.DateTimeField(auto_now=True)
+    likes = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.tweet} by {self.publisher}"

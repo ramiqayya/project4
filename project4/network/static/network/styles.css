@@ -1,0 +1,14 @@
+label {
+    font-size: large;
+    font-weight: bold;
+
+}
+
+.post-t {
+    margin: 3em;
+    border: solid 1px grey;
+    padding: 2em;
+    border-radius: 5px;
+
+
+}
