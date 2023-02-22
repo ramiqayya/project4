@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Post, User, Follow
+from django.contrib.auth.decorators import login_required
 
 from .forms import PostForm
 
@@ -81,6 +82,7 @@ def register(request):
         return render(request, "network/register.html")
 
 
+@login_required(login_url='/login')
 def profile(request):
     following = Follow.objects.filter(followee=request.user)
     followers = Follow.objects.filter(follower=request.user)
@@ -99,6 +101,7 @@ def profile(request):
                   )
 
 
+@login_required(login_url='/login')
 def following(request):
     followings = Follow.objects.filter(follower=request.user)
     allposts = []
