@@ -14,10 +14,11 @@
 
 {%for post in posts%}
 <div>
-    <h1>the guy: {{post.publisher}}</h1>
-    <p>tweet: {{post.tweet}}</p>
-    <h3>time: {{post.date_time}}</h3>
-    <h3>likes: {{post.likes}}</h3>
+
+    <h4>tweet: {{post.tweet}}</h4>
+    <p>time: {{post.date_time}}</p>
+    <p>likes: {{post.likes}}</p>
+    <p>posted by: <a href="{%url 'profile' post.publisher_id%}">{{post.publisher}}</a></p>
 
 </div>
 {%endfor%}

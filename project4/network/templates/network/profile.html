@@ -2,16 +2,17 @@
 
 {% block body %}
 
-<h2>Profile name:{{username}}</h2>
+<h2>Profile name: {{username.username|title}}</h2>
 <h2>Follwers: {{following}}</h2>
 <h2>Following: {{follwers}}</h2>
 
 {%for post in posts%}
 <div>
-    <h1>the guy: {{post.publisher}}</h1>
-    <p>tweet: {{post.tweet}}</p>
-    <h3>time: {{post.date_time}}</h3>
-    <h3>likes: {{post.likes}}</h3>
+
+    <h4>tweet: {{post.tweet}}</h4>
+    <p>time: {{post.date_time}}</p>
+    <p>likes: {{post.likes}}</p>
+    <p>posted by: {{post.publisher}}</p>
 
 </div>
 {%endfor%}

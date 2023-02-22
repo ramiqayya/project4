@@ -83,18 +83,18 @@ def register(request):
 
 
 @login_required(login_url='/login')
-def profile(request):
-    following = Follow.objects.filter(followee=request.user)
-    followers = Follow.objects.filter(follower=request.user)
+def profile(request, user_id):
+    following = Follow.objects.filter(followee_id=user_id)
+    followers = Follow.objects.filter(follower_id=user_id)
     following_count = len(following)
     followers_count = len(followers)
-    posts = Post.objects.filter(publisher=request.user).order_by("-date_time")
+    posts = Post.objects.filter(publisher_id=user_id).order_by("-date_time")
 
     return render(request, "network/profile.html",
                   {
                       "following": following_count,
                       "follwers": followers_count,
-                      "username": request.user,
+                      "username": User.objects.get(pk=user_id),
                       "posts": posts
 
                   }
