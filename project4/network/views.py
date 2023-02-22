@@ -3,11 +3,9 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Post
+from .models import Post, User, Follow
 
 from .forms import PostForm
-
-from .models import User
 
 
 def index(request):
@@ -23,7 +21,7 @@ def index(request):
 
     else:
         post_form = PostForm()
-    all_posts = Post.objects.all()
+    all_posts = Post.objects.order_by("-date_time")
 
     return render(request, "network/index.html", {
         "new_post": post_form,
@@ -83,8 +81,22 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def all_posts(request):
-    all_posts = Post.objects.order_by("-date_time")
-    return render(request, "network/allposts.html",
+def profile(request):
+    following = Follow.objects.filter(follower=request.user)
+    followers = Follow.objects.filter(followee=request.user)
+    following_count = len(following)
+    followers_count = len(followers)
 
-                  {"posts": all_posts})
+    return render(request, "network/profile.html",
+                  {
+                      "following": following_count,
+                      "follwers": followers_count,
+                      "username": request.user
+                  }
+                  )
+
+# def all_posts(request):
+#     all_posts = Post.objects.order_by("-date_time")
+#     return render(request, "network/allposts.html",
+
+#                   {"posts": all_posts})

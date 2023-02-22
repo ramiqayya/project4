@@ -8,6 +8,6 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
-    # path("new", views.new_post, name="new"),
-    path("allposts", views.all_posts, name="allposts")
+    path("profile", views.profile, name="profile"),
+    # path("allposts", views.all_posts, name="allposts")
 ]

@@ -15,3 +15,11 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.tweet} by {self.publisher}"
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='following')
+    followee = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='followers')
+    date_followed = models.DateTimeField(auto_now_add=True)
