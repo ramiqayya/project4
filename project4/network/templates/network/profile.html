@@ -8,14 +8,16 @@
 {%if me != username%}
 {%if me in f_list%}
 
-<form action="" method="POST">
-    <input type="submit" value="Unfollow">
+<form action="{% url 'profile' user_id %}" method="POST">
+    {%csrf_token%}
+    <input type="submit" name="unfollow" value="Unfollow">
 </form>
 {%elif me not in f_list%}
 
 
-<form action="" method="POST">
-    <input type="submit" value="Follow">
+<form action="{% url 'profile' user_id %}" method="POST">
+    {%csrf_token%}
+    <input type="submit" name="follow" value="Follow">
 </form>
 
 {%endif%}

@@ -84,18 +84,36 @@ def register(request):
 
 @login_required(login_url='/login')
 def profile(request, user_id):
+
     following = Follow.objects.filter(followee_id=user_id)
     followers = Follow.objects.filter(follower_id=user_id)
     print(followers)
     followees_list = []
+    followings_list = Follow.objects.filter(follower=request.user)
+    ff_list = []
+    for ff in followings_list:
+        print(ff.follower)
+        ff_list.append(str(ff.follower))
+    print(ff_list)
+    # print(followings_list)
     for follower in followers:
-        print(follower.followee)
+        # print(follower.followee)
         followees_list.append(follower.followee)
+    # print(followees_list)
     following_count = len(following)
     followers_count = len(followers)
     posts = Post.objects.filter(publisher_id=user_id).order_by("-date_time")
     me = request.user
     username = User.objects.get(pk=user_id)
+    if request.method == "POST":
+        if "follow" in request.POST:
+            Follow.objects.create(follower=me, followee=username)
+            return HttpResponseRedirect(reverse('profile', kwargs={'user_id': user_id}))
+
+        elif "unfollow" in request.POST:
+            unfollow = Follow.objects.get(follower=me, followee=username)
+            unfollow.delete()
+            return HttpResponseRedirect(reverse('profile', kwargs={'user_id': user_id}))
 
     return render(request, "network/profile.html",
                   {
@@ -104,7 +122,8 @@ def profile(request, user_id):
                       "username": str(username.username),
                       "posts": posts,
                       "me": str(me),
-                      "f_list": followees_list
+                      "f_list": ff_list,
+                      "user_id": user_id
 
 
                   }
