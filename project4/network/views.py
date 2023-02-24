@@ -89,7 +89,8 @@ def profile(request, user_id):
     followers = Follow.objects.filter(follower_id=user_id)
     print(followers)
     followees_list = []
-    followings_list = Follow.objects.filter(follower=request.user)
+    followings_list = Follow.objects.filter(
+        follower=request.user, followee_id=user_id)
     ff_list = []
     for ff in followings_list:
         print(ff.follower)
