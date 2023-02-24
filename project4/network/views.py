@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Post, User, Follow
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from math import ceil
 
 from .forms import PostForm
 
@@ -23,10 +25,15 @@ def index(request):
     else:
         post_form = PostForm()
     all_posts = Post.objects.order_by("-date_time")
+    # print(len(all_posts))
+    paginator = Paginator(all_posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "network/index.html", {
         "new_post": post_form,
-        "posts": all_posts
+        "posts": all_posts,
+        'page_obj': page_obj
     })
 
 
@@ -143,8 +150,14 @@ def following(request):
             print(post)
             allposts.append(post)
 
+    paginator = Paginator(allposts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/following.html", {
-        "posts": allposts
+        "posts": allposts,
+        "page_obj": page_obj
+
     })
 
     # def all_posts(request):
