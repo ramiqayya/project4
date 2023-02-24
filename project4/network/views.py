@@ -32,7 +32,6 @@ def index(request):
 
     return render(request, "network/index.html", {
         "new_post": post_form,
-        "posts": all_posts,
         'page_obj': page_obj
     })
 
@@ -94,25 +93,24 @@ def profile(request, user_id):
 
     following = Follow.objects.filter(followee_id=user_id)
     followers = Follow.objects.filter(follower_id=user_id)
-    # print(followers)
-    # followees_list = []
+
     followings_list = Follow.objects.filter(
         follower=request.user, followee_id=user_id)
     ff_list = []
     for ff in followings_list:
         print(ff.follower)
         ff_list.append(str(ff.follower))
-    print(ff_list)
-    # print(followings_list)
-    # for follower in followers:
-    # print(follower.followee)
-    # followees_list.append(follower.followee)
-    # print(followees_list)
+
     following_count = len(following)
     followers_count = len(followers)
     posts = Post.objects.filter(publisher_id=user_id).order_by("-date_time")
     me = request.user
     username = User.objects.get(pk=user_id)
+
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     if request.method == "POST":
         if "follow" in request.POST:
             Follow.objects.create(follower=me, followee=username)
@@ -128,7 +126,7 @@ def profile(request, user_id):
                       "following": following_count,
                       "followers": followers_count,
                       "username": str(username.username),
-                      "posts": posts,
+                      "page_obj": page_obj,
                       "me": str(me),
                       "f_list": ff_list,
                       "user_id": user_id
@@ -155,7 +153,6 @@ def following(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, "network/following.html", {
-        "posts": allposts,
         "page_obj": page_obj
 
     })
