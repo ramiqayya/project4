@@ -4,32 +4,39 @@
 
 
 {%for post in page_obj|dictsortreversed:"date_time"%}
-<div>
 
-    <b>tweet: {{post.tweet}}</b>
-    <p>By: {{post.publisher}}</p>
-    <p>time: {{post.date_time}}</p>
-    <p>likes: {{post.likes}}</p>
 
+<div class="card mb-2 mt-2">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="{%url 'profile' post.publisher_id%}"><b>{{post.publisher|title}} </b> </a>
+        </li>
+        <li class="list-group-item">{{post.tweet}}</li>
+        <li class="list-group-item">{{post.likes}}</li>
+    </ul>
+    <div class="card-footer">
+        {{post.date_time}}
+    </div>
 </div>
+
+
+
+
 {%endfor%}
 
-<div class="pagination">
-    <span class="step-links">
+<nav aria-label="Page navigation">
+    <ul class="pagination">
         {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
         {% endif %}
+        <li class="page-item"> <a class="page-link" href=""> Page {{ page_obj.number }} of
+                {{page_obj.paginator.num_pages }}.</a>
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
+        </li>
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
         {% endif %}
-    </span>
-</div>
-
+    </ul>
+</nav>
 {% endblock %}

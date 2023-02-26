@@ -156,9 +156,3 @@ def following(request):
         "page_obj": page_obj
 
     })
-
-    # def all_posts(request):
-    #     all_posts = Post.objects.order_by("-date_time")
-    #     return render(request, "network/allposts.html",
-
-    #                   {"posts": all_posts})

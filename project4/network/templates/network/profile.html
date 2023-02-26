@@ -2,56 +2,82 @@
 
 {% block body %}
 
-<h2>Profile name: {{username|title}}</h2>
-<h2>Followers: {{following}}</h2>
-<h2>Following: {{followers}}</h2>
+<h2 class="mt-5 mb-4"> {{username|title}}</h2>
+
 {%if me != username%}
 {%if me in f_list%}
 
-<form action="{% url 'profile' user_id %}" method="POST">
+<form action="{% url 'profile' user_id %}" method="POST" class="mt-3 mb-3">
     {%csrf_token%}
-    <input type="submit" name="unfollow" value="Unfollow">
+    <input type="submit" name="unfollow" value="Unfollow" class="btn btn-outline-primary">
 </form>
 {%elif me not in f_list%}
 
 
-<form action="{% url 'profile' user_id %}" method="POST">
+<form action="{% url 'profile' user_id %}" method="POST" class="mt-3 mb-3">
     {%csrf_token%}
-    <input type="submit" name="follow" value="Follow">
+    <input type="submit" name="follow" value="Follow" class="btn btn-outline-primary">
 </form>
 
 {%endif%}
 {%endif%}
 
-{%for post in page_obj%}
-<div>
-
-    <b>tweet: {{post.tweet}}</b>
-    <p>posted by: {{post.publisher}}</p>
-    <p>time: {{post.date_time}}</p>
-    <p>likes: {{post.likes}}</p>
 
 
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <div class="p-3 mb-2 bg-light "> <b>{{following}}</b> Followers</div>
+        </div>
+        <div class="col">
+            <div class="p-3 mb-2 bg-light"> <b>{{followers}}</b> Following</div>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
 </div>
+
+
+
+
+{%for post in page_obj%}
+<div class="mb-2">
+
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>{{post.publisher}}</b></li>
+            <li class="list-group-item">{{post.tweet}}</li>
+            <li class="list-group-item">{{post.likes}}</li>
+        </ul>
+        <div class="card-footer">
+            {{post.date_time}}
+        </div>
+    </div>
+</div>
+
+
+
+
 {%endfor%}
 
-<div class="pagination">
-    <span class="step-links">
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
         {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
         {% endif %}
+        <li class="page-item"> <a class="page-link" href=""> Page {{ page_obj.number }} of
+                {{page_obj.paginator.num_pages }}.</a>
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
+        </li>
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
         {% endif %}
-    </span>
-</div>
+    </ul>
+</nav>
 
 
 
