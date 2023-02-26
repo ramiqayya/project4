@@ -25,14 +25,17 @@ def index(request):
     else:
         post_form = PostForm()
     all_posts = Post.objects.order_by("-date_time")
+    me = request.user
     # print(len(all_posts))
     paginator = Paginator(all_posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    print(me)
 
     return render(request, "network/index.html", {
         "new_post": post_form,
-        'page_obj': page_obj
+        "page_obj": page_obj,
+        "me": str(me)
     })
 
 

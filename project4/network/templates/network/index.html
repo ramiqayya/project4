@@ -23,6 +23,11 @@
         </li>
         <li class="list-group-item">{{post.tweet}}</li>
         <li class="list-group-item">{{post.likes}}</li>
+        {% if me == post.publisher|stringformat:"s"%}
+        <li class="list-group-item">
+            <a href="" class="btn btn-outline-success">Edit</a>
+        </li>
+        {% endif%}
     </ul>
     <div class="card-footer">
         {{post.date_time}}
