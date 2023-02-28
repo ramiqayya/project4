@@ -12,6 +12,8 @@ class Post(models.Model):
     tweet = models.CharField(max_length=280)
     date_time = models.DateTimeField(auto_now=True)
     likes = models.IntegerField(default=0)
+    liked_by = models.ManyToManyField(
+        User, related_name="liked_posts", blank=True)
 
     def serialize(self):
         return {
@@ -19,7 +21,8 @@ class Post(models.Model):
             "publisher": self.publisher.username,
             "tweet": self.tweet,
             "date_time": self.date_time.strftime("%b %d %Y, %I:%M %p"),
-            "likes": self.likes
+            "likes": self.likes,
+            "liked_by": [user.username for user in self.liked_by.all()]
         }
 
     def __str__(self):
