@@ -1,12 +1,14 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Post, User, Follow
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from math import ceil
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import PostForm
 
@@ -17,7 +19,6 @@ def index(request):
         post_form = PostForm(request.POST)
 
         if post_form.is_valid():
-            print("tsee tsee")
             post = post_form.cleaned_data['post']
             Post.objects.create(publisher=request.user, tweet=post)
             return redirect("index")
@@ -27,6 +28,7 @@ def index(request):
     all_posts = Post.objects.order_by("-date_time")
     me = request.user
     # print(len(all_posts))
+
     paginator = Paginator(all_posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -159,3 +161,26 @@ def following(request):
         "page_obj": page_obj
 
     })
+
+
+@login_required(login_url='/login')
+def edit_post(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    print(post.serialize())
+
+    return JsonResponse(post.serialize())
+
+
+@csrf_exempt
+@login_required(login_url='/login')
+def save_changes(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        edited_post = data.get("edited_post", "")
+        post_id = data.get("post_id", "")
+        print(edited_post)
+        print(post_id)
+        post = Post.objects.get(pk=post_id)
+        post.tweet = edited_post
+        post.save()
+        return JsonResponse({"message": "Tweet updated successfully."}, status=201)

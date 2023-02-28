@@ -13,6 +13,15 @@ class Post(models.Model):
     date_time = models.DateTimeField(auto_now=True)
     likes = models.IntegerField(default=0)
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "publisher": self.publisher.username,
+            "tweet": self.tweet,
+            "date_time": self.date_time.strftime("%b %d %Y, %I:%M %p"),
+            "likes": self.likes
+        }
+
     def __str__(self):
         return f"{self.tweet} by {self.publisher}"
 
