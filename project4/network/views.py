@@ -19,8 +19,8 @@ def index(request):
         post_form = PostForm(request.POST)
 
         if post_form.is_valid():
-            post = post_form.cleaned_data['post']
-            Post.objects.create(publisher=request.user, tweet=post)
+            tweet = post_form.cleaned_data['tweet']
+            Post.objects.create(publisher=request.user, tweet=tweet)
             return redirect("index")
 
     else:

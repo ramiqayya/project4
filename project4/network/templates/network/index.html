@@ -18,7 +18,7 @@
         <form action="{% url 'index' %}" method="POST">
             {%csrf_token %}
             {{ new_post }}
-            <input class="btn btn-primary mt-3" type="submit" value="Post" name="post">
+            <input class="btn btn-primary mt-3" type="submit" name="post">
         </form>
     </div>
     {%endif%}
@@ -38,6 +38,9 @@
                 <button class="btn btn-outline-success edit-b" data-pid="{{ post.id }}">Edit</button>
             </li>
             {% endif%}
+            <li class="list-group-item">
+                <button>like!</button>
+            </li>
         </ul>
         <div class="card-footer">
             {{post.date_time}}
