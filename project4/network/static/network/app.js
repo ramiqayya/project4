@@ -1,25 +1,50 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("edit-view").style.display = "none";
-    document.getElementById("posts-view").style.display = "block";
+    if (window.location.pathname === "/") {
+        document.getElementById("edit-view").style.display = "none";
+        document.getElementById("posts-view").style.display = "block";
+        const likeButtons = document.querySelectorAll(".like-f");
 
-    const editButtons = document.querySelectorAll(".edit-b");
-    editButtons.forEach(button => {
-        button.onclick = function () {
-            fetch(`edit/${button.dataset.pid}`)
-                .then(response => response.json())
-                .then(posts => {
-                    document.querySelector("#edit-text").innerHTML = posts.tweet,
-                        document.querySelector("#edit-text").dataset.postId = posts.id
-                    console.log(posts.tweet)
-                    console.log(posts.id)
-                })
-        }
+        likeButtons.forEach(button => {
 
-        button.addEventListener("click", edit_post)
+            button.addEventListener("submit", function (event) {
+                event.preventDefault();
+            })
+            button.onsubmit = function () {
+                fetch('/', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        liked_id: button.dataset.tid,
 
-    });
+                    })
+                }).then(response => response.json())
+                    .then(result => {
+                        // Print result
 
+                        console.log(result)
 
+                    });
+
+            }
+        });
+
+        const editButtons = document.querySelectorAll(".edit-b");
+        editButtons.forEach(button => {
+            button.onclick = function () {
+                fetch(`edit/${button.dataset.pid}`)
+                    .then(response => response.json())
+                    .then(posts => {
+                        document.querySelector("#edit-text").innerHTML = posts.tweet,
+                            document.querySelector("#edit-text").dataset.postId = posts.id
+                        console.log(posts.tweet)
+                        console.log(posts.id)
+                    })
+            }
+
+            button.addEventListener("click", edit_post)
+
+        });
+
+    }
 
 
 })

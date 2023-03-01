@@ -13,18 +13,38 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import PostForm
 
 
+@csrf_exempt
 def index(request):
 
     if request.method == "POST":
-        post_form = PostForm(request.POST)
+        if "tweet" in request.POST:
+            post_form = PostForm(request.POST)
 
-        if post_form.is_valid():
-            tweet = post_form.cleaned_data['tweet']
-            Post.objects.create(publisher=request.user, tweet=tweet)
-            return redirect("index")
+            if post_form.is_valid():
+                tweet = post_form.cleaned_data['tweet1']
+                Post.objects.create(publisher=request.user, tweet=tweet)
+                return redirect("index")
+        else:
 
-    else:
-        post_form = PostForm()
+            print("takeha takeha takeha")
+            data = json.loads(request.body)
+            liked_id = data.get("liked_id", "")
+            user = request.user
+            print(liked_id)
+            tweet = Post.objects.get(pk=liked_id)
+            liked_by = tweet.liked_by.all()
+
+            tweet.liked_by.add(user)
+            tweet.likes = len(liked_by)
+            tweet.save()
+
+            print(len(liked_by))
+            # tweet.save()
+            # tweet.likes = len(tweet.liked_by)
+            return JsonResponse({"likes_count": len(liked_by)}, status=201)
+            # print(len(tweet.liked_by))
+
+    post_form = PostForm()
     all_posts = Post.objects.order_by("-date_time")
     me = request.user
     # print(len(all_posts))
@@ -32,7 +52,7 @@ def index(request):
     paginator = Paginator(all_posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    print(me)
+    # print(me)
 
     return render(request, "network/index.html", {
         "new_post": post_form,

@@ -18,7 +18,7 @@
         <form action="{% url 'index' %}" method="POST">
             {%csrf_token %}
             {{ new_post }}
-            <input class="btn btn-primary mt-3" type="submit" name="post">
+            <input class="btn btn-primary mt-3" type="submit" name="tweet">
         </form>
     </div>
     {%endif%}
@@ -31,7 +31,7 @@
                 </a>
             </li>
             <li class="list-group-item">{{post.tweet}}</li>
-            <li class="list-group-item">{{post.likes}}</li>
+            <li class="list-group-item likes">0</li>
 
             {% if me == post.publisher|stringformat:"s"%}
             <li class="list-group-item ">
@@ -39,7 +39,11 @@
             </li>
             {% endif%}
             <li class="list-group-item">
-                <button>like!</button>
+                <form class="like-f" data-tid="{{post.id}}">
+                    {%csrf_token%}
+                    <input type="submit" class="btn btn-outline-primary like-b" name="like" value="Like!">
+
+                </form>
             </li>
         </ul>
         <div class="card-footer">
