@@ -1,4 +1,5 @@
 import json
+import time
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -9,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from math import ceil
 from django.views.decorators.csrf import csrf_exempt
+
 
 from .forms import PostForm
 
@@ -32,9 +34,17 @@ def index(request):
             user = request.user
             print(liked_id)
             tweet = Post.objects.get(pk=liked_id)
-            liked_by = tweet.liked_by.all()
+            liked_by = list(tweet.liked_by.all())
+            print(liked_by)
+            if user in liked_by:
 
-            tweet.liked_by.add(user)
+                tweet.liked_by.remove(user)
+
+            else:
+                tweet.liked_by.add(user)
+
+            print(liked_by)
+
             tweet.likes = len(liked_by)
             tweet.save()
 
