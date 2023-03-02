@@ -52,6 +52,7 @@ def index(request):
     paginator = Paginator(all_posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
     # print(me)
 
     return render(request, "network/index.html", {

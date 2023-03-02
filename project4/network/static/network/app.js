@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then(result => {
                         // Print result
 
-                        console.log(result)
+                        console.log(result.likes_count)
+                        document.getElementById(button.dataset.tid).innerHTML = result.likes_count
 
                     });
 
