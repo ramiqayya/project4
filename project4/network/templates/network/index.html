@@ -31,6 +31,8 @@
                 </a>
             </li>
             <li class="list-group-item">{{post.tweet}}</li>
+
+
             <li class="list-group-item likes" id="{{post.id}}">{{post.likes}}</li>
 
             {% if me == post.publisher|stringformat:"s"%}
@@ -41,7 +43,14 @@
             <li class="list-group-item">
                 <form class="like-f" data-tid="{{post.id}}">
                     {%csrf_token%}
-                    <input type="submit" class="btn btn-outline-primary like-b" name="like" value="Like!">
+
+                    {%if me in post.liked_by.all|stringformat:"s"%}
+                    <input type="submit" class="btn btn-primary like-b num{{post.id}}" name="like" value="Unlike">
+                    {%else%}
+                    <input type="submit" class="btn btn-outline-primary like-b num{{post.id}}" name="like" value="Like">
+                    {%endif%}
+
+
 
                 </form>
             </li>

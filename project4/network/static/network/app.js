@@ -2,18 +2,19 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.location.pathname === "/") {
         document.getElementById("edit-view").style.display = "none";
         document.getElementById("posts-view").style.display = "block";
-        const likeButtons = document.querySelectorAll(".like-f");
+        const likeForms = document.querySelectorAll(".like-f");
 
-        likeButtons.forEach(button => {
+        likeForms.forEach(likeForm => {
 
-            button.addEventListener("submit", function (event) {
+            likeForm.addEventListener("submit", function (event) {
                 event.preventDefault();
             })
-            button.onsubmit = function () {
+
+            likeForm.onsubmit = function () {
                 fetch('/', {
                     method: 'POST',
                     body: JSON.stringify({
-                        liked_id: button.dataset.tid,
+                        liked_id: likeForm.dataset.tid,
 
                     })
                 }).then(response => response.json())
@@ -21,8 +22,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Print result
 
                         console.log(result.likes_count)
-                        document.getElementById(button.dataset.tid).innerHTML = result.likes_count
+                        document.getElementById(likeForm.dataset.tid).innerHTML = result.likes_count
+                        const thisbutton = document.querySelector(`.num${likeForm.dataset.tid}`)
+                        if (thisbutton.value == "Like") {
+                            thisbutton.value = "Unlike"
+                            thisbutton.classList.remove("btn-outline-primary")
+                            thisbutton.classList.add("btn-primary")
+                        } else {
 
+                            thisbutton.value = "Like"
+                            thisbutton.classList.remove("btn-primary")
+                            thisbutton.classList.add("btn-outline-primary")
+                        }
                     });
 
             }

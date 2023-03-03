@@ -1,5 +1,5 @@
 import json
-import time
+
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -36,12 +36,15 @@ def index(request):
             tweet = Post.objects.get(pk=liked_id)
             liked_by = list(tweet.liked_by.all())
             print(liked_by)
+
             if user in liked_by:
 
                 tweet.liked_by.remove(user)
 
             else:
                 tweet.liked_by.add(user)
+
+            liked_by = list(tweet.liked_by.all())
 
             print(liked_by)
 
@@ -58,6 +61,9 @@ def index(request):
     all_posts = Post.objects.order_by("-date_time")
     me = request.user
     # print(len(all_posts))
+    for ss in all_posts:
+        print(list(ss.liked_by.all()))
+        ss.likes = len(list(ss.liked_by.all()))
 
     paginator = Paginator(all_posts, 10)
     page_number = request.GET.get('page')
@@ -68,7 +74,8 @@ def index(request):
     return render(request, "network/index.html", {
         "new_post": post_form,
         "page_obj": page_obj,
-        "me": str(me)
+        "me": str(me),
+
     })
 
 
