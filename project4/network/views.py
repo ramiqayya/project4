@@ -221,4 +221,4 @@ def save_changes(request):
         post = Post.objects.get(pk=post_id)
         post.tweet = edited_post
         post.save()
-        return JsonResponse({"message": "Tweet updated successfully."}, status=201)
+        return JsonResponse({"edit": edited_post}, status=201)

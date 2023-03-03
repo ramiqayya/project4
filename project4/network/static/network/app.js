@@ -86,6 +86,8 @@ function edit_post() {
             .then(result => {
                 // Print result
                 console.log(result);
+                const editedTweet = document.querySelector(`.tweet${edited_p.dataset.postId}`)
+                editedTweet.innerHTML = result.edit
             });
         document.getElementById("edit-view").style.display = "none";
         document.getElementById("posts-view").style.display = "block";

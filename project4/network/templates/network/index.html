@@ -30,7 +30,7 @@
             <li class="list-group-item"><a href="{%url 'profile' post.publisher_id%}"><b>{{post.publisher|title}} </b>
                 </a>
             </li>
-            <li class="list-group-item">{{post.tweet}}</li>
+            <li class="list-group-item tweet{{post.id}}">{{post.tweet}}</li>
 
 
             <li class="list-group-item likes" id="{{post.id}}">{{post.likes}}</li>
