@@ -11,7 +11,7 @@
         <li class="list-group-item"><a href="{%url 'profile' post.publisher_id%}"><b>{{post.publisher|title}} </b> </a>
         </li>
         <li class="list-group-item">{{post.tweet}}</li>
-        <li class="list-group-item">{{post.likes}}</li>
+        <li class="list-group-item">Likes: {{post.likes}}</li>
     </ul>
     <div class="card-footer">
         {{post.date_time}}
