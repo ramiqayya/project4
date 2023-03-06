@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     if (window.location.pathname === "/") {
         document.getElementById("edit-view").style.display = "none";
-        document.getElementById("posts-view").style.display = "block";
+
         const likeForms = document.querySelectorAll(".like-f");
 
         likeForms.forEach(likeForm => {
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetch(`edit/${button.dataset.pid}`)
                     .then(response => response.json())
                     .then(posts => {
-                        document.querySelector("#edit-text").innerHTML = posts.tweet,
+                        document.querySelector("#edit-text").value = posts.tweet,
                             document.querySelector("#edit-text").dataset.postId = posts.id
                         console.log(posts.tweet)
                         console.log(posts.id)
@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener("click", edit_post)
 
         });
+        document.getElementById("posts-view").style.display = "block";
 
     }
 
